@@ -18,11 +18,6 @@ function openPopup() {
     popupContainer.classList.add('popup__opened');
 }
 
-function closePopup(evt) {
-    evt.preventDefault();
-    popupContainer.classList.remove('popup__opened');
-}
-
 function handleFormSubmit (evt) {
     evt.preventDefault();
     fullName.textContent = popupName.value
@@ -30,4 +25,8 @@ function handleFormSubmit (evt) {
     popupContainer.classList.remove('popup__opened');
 }
 
-formElement.addEventListener('submit', handleFormSubmit); 
+function closePopup() {
+    popupContainer.classList.remove('popup__opened');
+}
+
+popupContainer.addEventListener('submit', handleFormSubmit); 
