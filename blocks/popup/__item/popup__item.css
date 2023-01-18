@@ -1,5 +1,7 @@
 .popup__item{
     width: 358px;
+    font-size: 14px;
+    line-height: 17px;
     height: 27px;
     border: 0;
     border-bottom: 1px solid rgb(0 0 0 / 0.2);
@@ -10,9 +12,6 @@
 @media screen and (max-width:700px) {
     .popup__item {
         width: 238px;
-        height: 27px;
-        font-size: 14px;
-        line-height: 17px;
         margin: 0 22px 27px;
     }
 }
