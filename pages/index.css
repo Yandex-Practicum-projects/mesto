@@ -17,9 +17,11 @@
 @import url(../blocks/grid-zona/grid-zona.css);
 
 @import url(../blocks/card/card.css);
+@import url(../blocks/card/__delete/card__delete.css);
 @import url(../blocks/card/__info/card__info.css);
 @import url(../blocks/card/__image/card__image.css);
 @import url(../blocks/card/__like/card__like.css);
+@import url(../blocks/card/__like/_active/card__like_active.css);
 @import url(../blocks/card/__name-place/card__name-place.css);
 
 @import url(../blocks/footer/footer.css);
@@ -27,8 +29,17 @@
 
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/__container/popup__container.css);
-@import url(../blocks/popup/_opened/popup_opened.css);
 @import url(../blocks/popup/__title/popup__title.css);
 @import url(../blocks/popup/__save/popup__save.css);
 @import url(../blocks/popup/__item/popup__item.css);
 @import url(../blocks/popup/__close/popup__close.css);
+
+@import url(../blocks/edit/_opened/edit_opened.css);
+@import url(../blocks/new-place/_opened/new-place_opened.css);
+
+@import url(../blocks/fullscreen-card/fullscreen-card.css);
+@import url(../blocks/fullscreen-card/_opened/fullscreen-card_opened.css);
+@import url(../blocks/fullscreen-card/__close/fullscreen-card__close.css);
+@import url(../blocks/fullscreen-card/__title/fullscreen-card__title.css);
+@import url(../blocks/fullscreen-card/__image/fullscreen-card__image.css);
+@import url(../blocks/fullscreen-card/__container/fullscreen-card__container.css);
