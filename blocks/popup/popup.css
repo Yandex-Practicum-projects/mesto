@@ -1,4 +1,4 @@
-.popup{
+.popup {
     background-color: rgb(0 0 0 / 0.5);
     position: fixed;
     left: 0;
@@ -8,8 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: opacity 0.5s linear;
+    visibility: hidden;
     opacity: 0;
-    height: 0;
-    overflow: hidden;
+    transition: visibility 1s, opacity 0.5s linear;
 }

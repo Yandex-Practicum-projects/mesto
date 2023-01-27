@@ -46,46 +46,54 @@ const fullscreenImage = fullscreenCard.querySelector('.fullscreen-card__image')
 const fullscreenTitle = fullscreenCard.querySelector('.fullscreen-card__title')
 const btnFullscreenClose = fullscreenCard.querySelector('.fullscreen-card__close')
 
+renderCards(initialCards)
+
 function closePopup(popup) {
     popup.classList.remove('popup_opened')
 }
 function openPopup(popup) {
     popup.classList.add('popup_opened')
 }
+function cardDelete(btn) {
+    btn.target.closest('.card').remove();
+}
+function openCard(name, link) {
+    fullscreenTitle.textContent = name
+    fullscreenImage.src = link
+    fullscreenImage.alt = name
+    openPopup(fullscreenCard) 
+}
+function toggleLike(btn) {
+    btn.target.classList.toggle('card__like_active')
+}
 
 function addCards(name, link) {
     const cardClone = cardTemplateContainer.cloneNode(true);
     const cardBtnDelete = cardClone.querySelector('.card__delete')
     const cardBtnLike = cardClone.querySelector('.card__like')
-    const namePlce = cardClone.querySelector('.card__name-place').textContent = name;
     const cardImage = cardClone.querySelector('.card__image')
+
+    cardClone.querySelector('.card__name-place').textContent = name;
     cardImage.src = link;
     cardImage.alt = name;
 
-    cardBtnLike.addEventListener('click', () => {
-        cardBtnLike.classList.toggle('card__like_active')
-    })
-
-    cardBtnDelete.addEventListener('click', () => {
-        const cardList = cardBtnDelete.closest('.card')
-        cardList.remove();
-    })
-
+    cardBtnLike.addEventListener('click', toggleLike)
+    cardBtnDelete.addEventListener('click', cardDelete)
     cardImage.addEventListener('click', () => {
-        fullscreenTitle.textContent = namePlce.textContent
-        fullscreenImage.src = linkPlce.src
-        fullscreenImage.alt = namePlce.textContent
-        fullscreenCard.classList.add('popup_opened')
+        openCard(name, link)
     })
 
     return cardClone
 }
 
-initialCards.forEach(function (element) {
+function renderCards(elements) {
+const cards = elements.map((element) => {
     let name = element.name
     let link = element.link
-    gridZona.append(addCards(name, link))
+    return addCards(name, link)
 })
+gridZona.append(...cards)
+}
 
 newPlace.addEventListener('submit', (evt) => {
     evt.preventDefault();
