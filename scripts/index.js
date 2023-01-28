@@ -41,10 +41,10 @@ const editProfile = document.querySelector('.popup_edit')
 const popupName = editProfile.querySelector('.popup__name')
 const popupAbout = editProfile.querySelector('.popup__about')
 const btnCloseEditProfile = editProfile.querySelector('.popup__close')
-const fullscreenCard = document.querySelector('.fullscreen-card')
-const fullscreenImage = fullscreenCard.querySelector('.fullscreen-card__image')
-const fullscreenTitle = fullscreenCard.querySelector('.fullscreen-card__title')
-const btnFullscreenClose = fullscreenCard.querySelector('.fullscreen-card__close')
+const fullscreenCard = document.querySelector('.popup_foolscreen-card')
+const fullscreenImage = fullscreenCard.querySelector('.popup__card-image')
+const fullscreenTitle = fullscreenCard.querySelector('.popup__card-title')
+const btnFullscreenClose = fullscreenCard.querySelector('.popup__close')
 
 renderCards(initialCards)
 
@@ -88,8 +88,8 @@ function addCards(name, link) {
 
 function renderCards(elements) {
 const cards = elements.map((element) => {
-    let name = element.name
-    let link = element.link
+    const name = element.name
+    const link = element.link
     return addCards(name, link)
 })
 gridZona.append(...cards)
@@ -97,8 +97,8 @@ gridZona.append(...cards)
 
 newPlace.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    let name = nameNewPlace.value;
-    let link = linkNewPlace.value;
+    const name = nameNewPlace.value;
+    const link = linkNewPlace.value;
     gridZona.prepend(addCards(name, link))
     closePopup(newPlace)
     nameNewPlace.value = ''
