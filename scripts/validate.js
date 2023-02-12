@@ -48,10 +48,11 @@ const setEventListeners = (form, config) => {
     const inputList = Array.from(form.querySelectorAll(config.inputSelector));
     const btnSubmit = form.querySelector(config.submitButtonSelector)
     toggleButtonState(btnSubmit, config.inactiveButtonClass, inputList)
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        toggleButtonState(btnSubmit, config.inactiveButtonClass, inputList)
-    })
+    form.addEventListener('reset', () => {
+        setTimeout(() => {
+         toggleButtonState(btnSubmit, config.inactiveButtonClass, inputList)
+        }, 0);
+    });
     inputList.forEach((elementInput) => {
         elementInput.addEventListener('input', (e) => {
             handeleFormInput(e, form, config.inputErrorClass)

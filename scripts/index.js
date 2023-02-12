@@ -6,19 +6,17 @@ const btnAddNewPlace = document.querySelector('.profile__add')
 const btnEditProfile = document.querySelector('.profile__edit')
 const fullName = document.querySelector('.profile__name')
 const about = document.querySelector('.profile__about')
+const popups = document.querySelectorAll('.popup')
 const newPlace = document.querySelector('.popup_new-place')
 const newPlaceForm = newPlace.querySelector('.popup__form')
-const btnCloseNewPlace = newPlace.querySelector('.popup__close')
 const nameNewPlace = newPlace.querySelector('.popup__name')
 const linkNewPlace = newPlace.querySelector('.popup__link')
 const editProfile = document.querySelector('.popup_edit')
 const popupName = editProfile.querySelector('.popup__name')
 const popupAbout = editProfile.querySelector('.popup__about')
-const btnCloseEditProfile = editProfile.querySelector('.popup__close')
 const fullscreenCard = document.querySelector('.popup_foolscreen-card')
 const fullscreenImage = fullscreenCard.querySelector('.popup__card-image')
 const fullscreenTitle = fullscreenCard.querySelector('.popup__card-title')
-const btnFullscreenClose = fullscreenCard.querySelector('.popup__close')
 
 popupName.value = fullName.textContent;
 popupAbout.value = about.textContent;
@@ -27,26 +25,21 @@ renderCards(initialCards)
 
 function closePopup(popup) {
     popup.classList.remove('popup_opened')
-    document.removeEventListener('keydown', keyHandler)
-    popup.removeEventListener('click', keyHandler)
+    document.removeEventListener('keydown', handleEscape)
 }
 function openPopup(popup) {
     popup.classList.add('popup_opened')
-    document.addEventListener('keydown', keyHandler)
-    popup.addEventListener('click', keyHandler)
+    document.addEventListener('keydown', handleEscape)
 }
 
-function keyHandler(evt) {
-    const popupOpened = document.querySelector('.popup_opened')
+function handleEscape(evt) {
     if (evt.key === 'Escape') {
-        closePopup(popupOpened)
-    }
-    if (evt.target === popupOpened) {
+        const popupOpened = document.querySelector('.popup_opened')
         closePopup(popupOpened)
     }
 }
 
-function cardDelete(btn) {
+function deleteCard(btn) {
     btn.target.closest('.card').remove();
 }
 function openCard(name, link) {
@@ -70,7 +63,7 @@ function addCards(name, link) {
     cardImage.alt = name;
 
     cardBtnLike.addEventListener('click', toggleLike)
-    cardBtnDelete.addEventListener('click', cardDelete)
+    cardBtnDelete.addEventListener('click', deleteCard)
     cardImage.addEventListener('click', () => {
         openCard(name, link)
     })
@@ -103,14 +96,15 @@ editProfile.addEventListener('submit', (evt) => {
     closePopup(editProfile)
 })
 
-btnFullscreenClose.addEventListener('click', () => {
-    closePopup(fullscreenCard)
-})
-btnCloseNewPlace.addEventListener('click', () => {
-    closePopup(newPlace)
-})
-btnCloseEditProfile.addEventListener('click', () => {
-    closePopup(editProfile)
+popups.forEach((popup) => {
+    popup.addEventListener('mousedown', (evt) => {
+        if (evt.target.classList.contains('popup_opened')) {
+            closePopup(popup)
+        }
+        if (evt.target.classList.contains('popup__close')) {
+            closePopup(popup)
+        }
+    })
 })
 
 btnAddNewPlace.addEventListener('click', () => {
