@@ -1,8 +1,0 @@
-.parallax__images {
-    width: 120%;
-    height: 120%;
-    position: absolute;
-    left: -10%;
-    top: -10%;
-    z-index: 1;
-}

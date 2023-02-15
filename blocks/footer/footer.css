@@ -1,17 +1,11 @@
-.footer {
-    position: relative;
-    z-index: 4;
-    background-color: #0b1d26;
-    display: flex;
-    justify-content: space-between;
-}
-
-.footer.wraper {
-    padding: 200px 70px 120px;
+.footer{
+    max-width: 880px;
+    margin: 0 auto 60px;
+    padding-left: 19px;
 }
 
 @media screen and (max-width:700px) {
     .footer {
-
+        margin-bottom: 36px;
     }
 }
