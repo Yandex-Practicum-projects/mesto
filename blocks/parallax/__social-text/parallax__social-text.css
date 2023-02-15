@@ -1,0 +1,8 @@
+.parallax__social-text {
+    font-weight: 700;
+    font-size: 18px;
+    transform: rotate(90deg) translateY(62px);
+    height: 83px;
+    margin: 0;
+    width: max-content;
+}

@@ -1,11 +1,9 @@
 .footer__copyright {
-    font-style: normal;
-    font-weight: 400;
+    font-weight: 500;
     font-size: 18px;
-    line-height: 22px;
-    color: #545454;
-    margin: 0;
-    bottom: 0;
+    color: #FFFFFF;
+    opacity: 0.5;
+    margin: 79px 0 0 0;
 }
 
 @media screen and (max-width:700px) {
