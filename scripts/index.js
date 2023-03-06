@@ -2,37 +2,40 @@ import { initialCards, config } from './constants/index.js';
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
-const gridZona = document.querySelector('.grid-zona');
+const gridZona = document.querySelector(config.gridZonaSelector);
 const allForms = Array.from(document.querySelectorAll(config.formSelector));
-const btnAddNewPlace = document.querySelector('.profile__add');
-const btnEditProfile = document.querySelector('.profile__edit');
-const fullName = document.querySelector('.profile__name');
-const about = document.querySelector('.profile__about');
-const popups = document.querySelectorAll('.popup');
-const newPlace = document.querySelector('.popup_new-place');
-const newPlaceForm = newPlace.querySelector('.popup__form');
-const nameNewPlace = newPlace.querySelector('.popup__name');
-const linkNewPlace = newPlace.querySelector('.popup__link');
-const editProfile = document.querySelector('.popup_edit');
-const popupName = editProfile.querySelector('.popup__name');
-const popupAbout = editProfile.querySelector('.popup__about');
-const fullscreenCard = document.querySelector('.popup_foolscreen-card');
-const fullscreenImage = fullscreenCard.querySelector('.popup__card-image');
-const fullscreenTitle = fullscreenCard.querySelector('.popup__card-title');
+const btnAddNewPlace = document.querySelector(config.btnAddNewPlaceSelector);
+const btnEditProfile = document.querySelector(config.btnEditProfileSelector);
+const fullName = document.querySelector(config.fullNameSelector);
+const about = document.querySelector(config.aboutSelector);
+const popups = document.querySelectorAll(config.popupsSelector);
+const newPlace = document.querySelector(config.newPlaceSelector);
+const nameNewPlace = newPlace.querySelector(config.popupNameSelector);
+const linkNewPlace = newPlace.querySelector(config.linkNewPlaceSelector);
+const editProfile = document.querySelector(config.editProfileSelector);
+const popupName = editProfile.querySelector(config.popupNameSelector);
+const popupAbout = editProfile.querySelector(config.popupAboutSelector);
+const fullscreenCard = document.querySelector(config.fullscreenCardSelector);
+const fullscreenImage = fullscreenCard.querySelector(config.fullscreenImageSelector);
+const fullscreenTitle = fullscreenCard.querySelector(config.fullscreenTitleSelector);
 
 function closePopup(popup) {
-    popup.classList.remove('popup_opened');
+    const form = popup.querySelector(config.formSelector);
+    popup.classList.remove(config.popupOpenedClass);
+    if (form !== null) {
+        form.reset();
+    }
     document.removeEventListener('keydown', handleEscape);
 };
 
 function openPopup(popup) {
-    popup.classList.add('popup_opened');
+    popup.classList.add(config.popupOpenedClass);
     document.addEventListener('keydown', handleEscape);
 };
 
 function handleEscape(evt) {
     if (evt.key === 'Escape') {
-        const popupOpened = document.querySelector('.popup_opened');
+        const popupOpened = document.querySelector(config.popupOpenedSelector);
         closePopup(popupOpened);
     };
 };
@@ -45,7 +48,7 @@ const openCard = (name, link) => {
 };
 
 function createCard(element) {
-    const card = new Card(element, '.template', openCard);
+    const card = new Card(element, config.templateClass, openCard);
     const cardElement = card.addCard();
     return cardElement;
 };
@@ -61,11 +64,10 @@ allForms.forEach((form) => {
     formValidator.enableValidation();
 });
 
-newPlaceForm.addEventListener('submit', (evt) => {
+newPlace.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const newCard = { name: nameNewPlace.value, link: linkNewPlace.value };
     gridZona.prepend(createCard(newCard));
-    newPlaceForm.reset();
     closePopup(newPlace);
 });
 
@@ -78,10 +80,10 @@ editProfile.addEventListener('submit', (evt) => {
 
 popups.forEach((popup) => {
     popup.addEventListener('mousedown', (evt) => {
-        if (evt.target.classList.contains('popup_opened')) {
+        if (evt.target.classList.contains(config.popupOpenedClass)) {
             closePopup(popup);
         };
-        if (evt.target.classList.contains('popup__close')) {
+        if (evt.target.classList.contains(config.btnCloseClass)) {
             closePopup(popup)
         };
     });
