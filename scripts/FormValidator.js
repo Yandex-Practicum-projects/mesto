@@ -8,14 +8,22 @@ export default class FormValidator {
     };
 
     enableValidation() {
-        this._toggleButtonState();
         this.inputList.forEach((elementInput) => {
-            this._hideInputError(elementInput, this._getformError(elementInput));
             elementInput.addEventListener('input', (evt) => {
                 this._handeleFormInput(evt);
                 this._toggleButtonState();
             });
         });
+        this._toggleButtonState();
+        this._setEventListeners();
+    };
+
+    _setEventListeners() {
+        this.form.addEventListener('reset', () => { 
+            setTimeout(() => { 
+                this._toggleButtonState(); 
+            }, 0); 
+        }); 
     };
 
     _showInputError(selectInput, formError) {

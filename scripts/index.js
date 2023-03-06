@@ -3,6 +3,7 @@ import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
 const gridZona = document.querySelector('.grid-zona');
+const allForms = Array.from(document.querySelectorAll(config.formSelector));
 const btnAddNewPlace = document.querySelector('.profile__add');
 const btnEditProfile = document.querySelector('.profile__edit');
 const fullName = document.querySelector('.profile__name');
@@ -23,10 +24,9 @@ function closePopup(popup) {
     popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', handleEscape);
 };
+
 function openPopup(popup) {
     popup.classList.add('popup_opened');
-    const form = popup.querySelector('.popup__form');
-    validateForm(form);
     document.addEventListener('keydown', handleEscape);
 };
 
@@ -56,12 +56,10 @@ const renderCards = (elements) => {
     });
 };
 
-function validateForm(form) {
-    if (form !== null) {
-        const formValidator = new FormValidator(form, config);
-        formValidator.enableValidation();
-    };
-};
+allForms.forEach((form) => {
+    const formValidator = new FormValidator(form, config);
+    formValidator.enableValidation();
+});
 
 newPlaceForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
