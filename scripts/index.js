@@ -19,16 +19,14 @@ const fullscreenCard = document.querySelector('.popup_foolscreen-card');
 const fullscreenImage = fullscreenCard.querySelector('.popup__card-image');
 const fullscreenTitle = fullscreenCard.querySelector('.popup__card-title');
 
-popupName.value = fullName.textContent;
-popupAbout.value = about.textContent;
-
 function closePopup(popup) {
     popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', handleEscape);
 };
 function openPopup(popup) {
     popup.classList.add('popup_opened');
-    validateForm(popup);
+    const form = popup.querySelector('.popup__form');
+    validateForm(form);
     document.addEventListener('keydown', handleEscape);
 };
 
@@ -58,8 +56,7 @@ const renderCards = (elements) => {
     });
 };
 
-function validateForm(popup) {
-    const form = popup.querySelector('.popup__form');
+function validateForm(form) {
     if (form !== null) {
         const formValidator = new FormValidator(form, config);
         formValidator.enableValidation();
@@ -96,6 +93,8 @@ btnAddNewPlace.addEventListener('click', () => {
     openPopup(newPlace);
 });
 btnEditProfile.addEventListener('click', () => {
+    popupName.value = fullName.textContent;
+    popupAbout.value = about.textContent;
     openPopup(editProfile);
 });
 
