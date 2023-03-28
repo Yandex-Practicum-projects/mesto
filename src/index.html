@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/jpg" href="<%=require('./images/ava.jpg')%>">
     <title>Место</title>
 </head>
 
@@ -38,12 +39,12 @@
             <form name="edit-profile" class="popup__form" novalidate>
                 <div class="popup__wraper">
                     <input type="text" name="name" value="Жак-Ив Кусто" required class="popup__item popup__name" minlength="2"
-                        maxlength="40">
+                        maxlength="40" placeholder="Имя">
                     <span class="popup__item-error name-error"></span>
                 </div>
                 <div class="popup__wraper">
                     <input type="text" name="about" value="Исследователь океана" required class="popup__item popup__about" minlength="2"
-                        maxlength="200">
+                        maxlength="200" placeholder="О себе">
                     <span class="popup__item-error about-error"></span>
                 </div>
                 <button type="submit" class="popup__save">Сохранить</button>
@@ -56,12 +57,12 @@
             <h2 class="popup__title">Новое место</h2>
             <form name="new-place" class="popup__form" novalidate>
                 <div class="popup__wraper">
-                    <input type="text" name="name" value="" required class="popup__item popup__name"
+                    <input type="text" name="name" required class="popup__item popup__name"
                         placeholder="Название" minlength="2" maxlength="30">
                     <span class="popup__item-error name-error"></span>
                 </div>
                 <div class="popup__wraper">
-                    <input type="url" name="link" value="" required class="popup__item popup__link"
+                    <input type="url" name="link" required class="popup__item popup__link"
                         placeholder="Ссылка на картинку">
                     <span class="popup__item-error link-error"></span>
                 </div>

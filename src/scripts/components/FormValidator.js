@@ -1,15 +1,15 @@
 export default class FormValidator {
     constructor(form, data) {
-        this.form = form;
-        this.inactiveButtonClass = data.inactiveButtonClass;
-        this.inputErrorClass = data.inputErrorClass;
-        this.btnSubmit = this.form.querySelector(data.submitButtonSelector);
-        this.inputList = Array.from(this.form.querySelectorAll(data.inputSelector));
+        this._form = form;
+        this._inactiveButtonClass = data.inactiveButtonClass;
+        this._inputErrorClass = data.inputErrorClass;
+        this._btnSubmit = this._form.querySelector(data.submitButtonSelector);
+        this._inputList = Array.from(this._form.querySelectorAll(data.inputSelector));
     };
 
     enableValidation() {
         this._toggleButtonState();
-        this.inputList.forEach((elementInput) => {
+        this._inputList.forEach((elementInput) => {
             elementInput.addEventListener('input', (evt) => {
                 this._handeleFormInput(evt);
                 this._toggleButtonState();
@@ -19,10 +19,10 @@ export default class FormValidator {
     };
 
     _setEventListeners() {
-        this.form.addEventListener('reset', () => {
+        this._form.addEventListener('reset', () => {
             setTimeout(() => {
                 this._toggleButtonState();
-                this.inputList.forEach((elementInput) => {
+                this._inputList.forEach((elementInput) => {
                     this._hideInputError(elementInput, this._getformError(elementInput));
                 });
             }, 0);
@@ -30,12 +30,12 @@ export default class FormValidator {
     };
 
     _showInputError(selectInput, formError) {
-        selectInput.classList.add(this.inputErrorClass);
+        selectInput.classList.add(this._inputErrorClass);
         formError.textContent = selectInput.validationMessage;
     };
 
     _hideInputError = (selectInput, formError) => {
-        selectInput.classList.remove(this.inputErrorClass);
+        selectInput.classList.remove(this._inputErrorClass);
         formError.textContent = '';
     };
 
@@ -48,7 +48,7 @@ export default class FormValidator {
     };
 
     _hasInputValid = () => {
-        return this.inputList.some((input) => !input.validity.valid);
+        return this._inputList.some((input) => !input.validity.valid);
     };
 
     _toggleButtonState = () => {
@@ -60,17 +60,17 @@ export default class FormValidator {
     };
 
     _getformError(input) {
-        return this.form.querySelector(`.${input.name}-error`);
+        return this._form.querySelector(`.${input.name}-error`);
     }
 
     _disabledSubmitBtn = () => {
-        this.btnSubmit.classList.add(this.inactiveButtonClass);
-        this.btnSubmit.disabled = true;
+        this._btnSubmit.classList.add(this._inactiveButtonClass);
+        this._btnSubmit.disabled = true;
     };
 
     _enableSubmitBtn = () => {
-        this.btnSubmit.classList.remove(this.inactiveButtonClass);
-        this.btnSubmit.disabled = false;
+        this._btnSubmit.classList.remove(this._inactiveButtonClass);
+        this._btnSubmit.disabled = false;
     };
 
     _handeleFormInput = (evt) => {

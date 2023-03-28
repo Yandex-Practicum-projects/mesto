@@ -22,6 +22,10 @@
     border-color: rgba(0, 0, 0, 1);
 }
 
+.popup__save.popup__save_disabled:hover {
+    opacity: 1;
+    cursor: no-drop;
+}
 
 @media screen and (max-width:700px) {
     .popup__save {

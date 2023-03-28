@@ -1,6 +1,6 @@
 import './index.css';
 
-import { initialCards, config } from '../scripts/constants/index.js';
+import { initialCards, config } from '../scripts/utils/constants.js';
 import Card from '../scripts/components/Card.js';
 import FormValidator from '../scripts/components/FormValidator.js';
 import Section from '../scripts/components/Section.js';
@@ -13,12 +13,12 @@ const btnAddNewPlace = document.querySelector(config.btnAddCardSelector);
 const allForms = Array.from(document.querySelectorAll(config.formSelector));
 
 const handleCardClick = (name, link) => {
-    popupWithImage.openPopup(name, link)
+    popupWithImage.open(name, link)
 };
 
 const renderer = (item) => {
     const card = new Card(item, config.templateSelector, handleCardClick);
-    const cardElement = card.addCard();
+    const cardElement = card.generateCard();
     cardsList.addItem(cardElement);
 }
 
@@ -29,7 +29,6 @@ const popupAddCard = new PopupWithForm({
     selector: config.popupAddCardSelector,
     handleFormSubmit: (formData) => {
         renderer(formData);
-        popupAddCard.closePopup();
     }
 });
 
@@ -37,7 +36,6 @@ const popupEditProfile = new PopupWithForm({
     selector: config.popupEditProfileSelector,
     handleFormSubmit: (formData) => {
         userInfo.setUserInfo(formData)
-        popupEditProfile.closePopup();
     }
 });
 
@@ -52,9 +50,9 @@ popupAddCard.setEventListeners();
 popupEditProfile.setEventListeners();
 
 btnAddNewPlace.addEventListener('click', () => {
-    popupAddCard.openPopup();
+    popupAddCard.open();
 });
 
 btnEditProfile.addEventListener('click', () => {
-    popupEditProfile.openPopup();
+    popupEditProfile.open();
 });
