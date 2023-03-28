@@ -29,8 +29,6 @@ export default class FormValidator {
         });
     };
 
-
-
     _showInputError(selectInput, formError) {
         selectInput.classList.add(this.inputErrorClass);
         formError.textContent = selectInput.validationMessage;
