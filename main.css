@@ -420,6 +420,7 @@ template {
 }
 
 .profile__about {
+    width: 100%;
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
@@ -436,14 +437,32 @@ template {
         font-size: 14px;
         max-width: 282px;
         line-height: 17px;
+        text-align: center;
     }
 }
 .profile__avatar{
-    background-image: url(images/ava.3f3cda93da54f6f9181a.jpg);
     height: 120px;
     width: 120px;
     background-size: cover;
     border-radius: 50%;
+    cursor: pointer;
+}
+
+.profile__avatar::after {
+    content: '';
+    transition: all 400ms ease-in-out;
+    width: 100%;
+    display: block;
+    background-position: bottom;
+    background-size: 26px;
+    background-repeat: no-repeat;
+    background-image: url(images/pen.8667ac4a523e8fc42e59.svg);
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.profile__avatar:hover.profile__avatar::after {
+    background-position: center;
+    height: 100%;
 }
 .profile__edit {
     background-image: url(images/pen.8667ac4a523e8fc42e59.svg);
@@ -472,13 +491,13 @@ template {
     display: flex;
     max-width: 336px;
     flex-wrap: wrap;
-    justify-content: space-between;
     align-items: center;
     align-content: center;
+    gap: 0 17px;
 }
 @media screen and (max-width:700px) {
     .profile__info{
-        justify-content: space-evenly;
+        justify-content: center;
     }
 }
 .profile__name {
@@ -499,6 +518,7 @@ template {
         max-width: 250px;
         font-size: 27px;
         line-height: 33px;
+        padding-left: 35px;
     }
 }
 .profile__add{
@@ -570,6 +590,10 @@ template {
     border: 0;
 }
 
+.card__delete.hide {
+    display: none;
+}
+
 .card__delete:hover {
     opacity: 0.5;
     cursor: pointer;
@@ -579,7 +603,7 @@ template {
     justify-content: space-between;
     align-items: center;
     width: 85%;
-    margin: 21px auto;
+    margin: 25px auto;
 }
 .card__image {
     display: block;
@@ -599,11 +623,19 @@ width: 22px;
 background-image: url(images/like.87ed371465c7a6a1cd01.svg);
 border: 0;
 background-color: #fff;
+transform: translateY(-8px);
 }
 
 .card__like:hover{
     opacity: 0.5;
     cursor: pointer;
+}
+
+.card__like::after {
+    display: block;
+    content: attr(data-like);
+    font-size: 13px;
+    transform: translateY(18px);
 }
 .card__like_active {
     background-image: url(images/Union.7d05f10516335c399062.png);
@@ -712,6 +744,10 @@ background-color: #fff;
         margin: 25px 22px 70px;
     }
 }
+
+.popup_confirmation .popup__title {
+    margin-bottom: 20px;
+}
 .popup__save {
     background: #000000;
     border-radius: 2px;
@@ -726,10 +762,12 @@ background-color: #fff;
     color: #FFFFFF;
     margin: 18px 36px 37px;
 }
-.popup__save:hover{
+
+.popup__save:hover {
     opacity: 0.8;
     cursor: pointer;
 }
+
 .popup__save.popup__save_disabled {
     background: #E5E5E5;
     color: rgba(0, 0, 0, 1);
@@ -750,6 +788,19 @@ background-color: #fff;
         margin: 20px 22px 25px;
     }
 }
+
+.popup__save.loading::after {
+    content: '';
+    display: -webkit-inline-box;
+    width: 0;
+    animation: loading 1s ease-in-out infinite;
+}
+
+@keyframes loading {
+    0% { content: '.'; }
+    50% { content: '..'; }
+    100% { content: '...'; }
+  }
 .popup__item{
     width: 358px;
     font-size: 14px;
