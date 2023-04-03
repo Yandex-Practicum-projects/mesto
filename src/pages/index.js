@@ -23,66 +23,59 @@ const userAvatar = document.querySelector('.profile__avatar');
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-63',
   headers: {
-      authorization: '485da694-81b9-4feb-af69-7e62f449a2e4',
-      'Content-Type': 'application/json'
+    authorization: '485da694-81b9-4feb-af69-7e62f449a2e4',
+    'Content-Type': 'application/json'
   }
-}); 
+});
 
 const renderer = (item) => {
-  const card = new Card(item, config.templateSelector, handleCardClick, openPopupWithConfirmation, togleLike);
+  const card = new Card(item, config.templateSelector, handleCardClick, openPopupWithConfirmation, togleLike, userInfo.getId());
   const cardElement = card.generateCard();
   cardsList.addItem(cardElement);
 }
 
 const deleteCard = (card) => {
   api.deleteCard(card._data._id)
-    .then(res => {
-      if (res.ok) {
-        card.deleteCard()
-      }  else {
-        return Promise.reject(res.status)
-      }
+    .then(() => {
+      card.deleteCard()
     })
     .catch((err) => {
       console.log(`Ошибка: ${err}`)
     })
 };
 
+function openPopupEditProfile() {
+  nameInput.value = userName.textContent
+  aboutInput.value = aboutUser.textContent
+  popupEditProfile.open();
+}
+
 const cardsList = new Section({ renderer }, config.containerSelector);
 const popupWithImage = new PopupWithImage(config.popupImageSelector);
 const popupWithConfirmation = new PopupWithConfirmation(config.popupConfirmationSelector, deleteCard);
-const userInfo = new UserInfo(config.userNameSelector, config.aboutSelector);
+const userInfo = new UserInfo(config.userNameSelector, config.aboutSelector, userAvatar);
 
-api.getInitialCards()
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return initialCards
-    }
-  })
-  .then((result) => {
-    cardsList.renderItems(result)
-  });
+function renderCards() {
+  api.getInitialCards()
+    .then((result) => {
+      cardsList.renderItems(result)
+    });
+}
 
 api.getUserInfo()
-  .then((res) => {
-    if(res.ok) {
-      return res.json()
-    } else {
-      return Promise.reject(res.status)
-    }
-  })
   .then((result) => {
     userInfo.setUserInfo(result)
-    userAvatar.style.backgroundImage = `url(${result.avatar})`
+    userInfo.setAvatar(result.avatar)
   })
   .catch((err) => {
     console.log(`Ошибка: ${err}`)
+  })
+  .finally(() => {
+    renderCards()
   });
 
 const handleCardClick = (name, link) => {
-    popupWithImage.open(name, link)
+  popupWithImage.open(name, link)
 };
 
 const openPopupWithConfirmation = (card) => {
@@ -91,13 +84,6 @@ const openPopupWithConfirmation = (card) => {
 
 const togleLike = (card, set) => {
   api.togleLike(card._data._id, set)
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }  else {
-        return Promise.reject(res.status)
-      }
-    })
     .then((result) => {
       card.setLikes(result)
     })
@@ -110,92 +96,62 @@ const popupAddCard = new PopupWithForm({
   selector: config.popupAddCardSelector,
   handleFormSubmit: (formData) => {
     api.addCard(formData)
-      .then((res) => {
-        if(res.ok) {
-          return res.json()
-        } else {
-          return Promise.reject(res.status)
-        }
-      })
       .then((result) => {
         renderer(result);
+        popupAddCard.close()
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`)
       })
       .finally(() => {
-        popupAddCard.close()
+        popupAddCard.renderLoading(false)
       })
   }
 });
 
 const popupEditProfile = new PopupWithForm({
-    selector: config.popupEditProfileSelector,
-    handleFormSubmit: (formData) => {
-      api.editUserInfo(formData)
-        .then((res) => {
-          if(res.ok) {
-            return res.json()
-          } else {
-            return Promise.reject(res.status)
-          }
-        })
-        .then((result) => {
-          userInfo.setUserInfo(result);
-        })
-        .catch((err) => {
-          console.log(`Ошибка: ${err}`)
-        })
-        .finally(() => {
-          popupEditProfile.close()
-        })
-    }
+  selector: config.popupEditProfileSelector,
+  handleFormSubmit: (formData) => {
+    api.editUserInfo(formData)
+      .then((result) => {
+        userInfo.setUserInfo(result);
+        popupEditProfile.close()
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`)
+      })
+      .finally(() => {
+        popupEditProfile.renderLoading(false)
+      })
+  }
 });
 
 const popupChangeAvatar = new PopupWithForm({
   selector: config.popupChangeAvatarSelector,
   handleFormSubmit: (formData) => {
     api.changeAvatar(formData)
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return Promise.reject(res.status)
-        }
-      })
       .then((result) => {
-        userAvatar.style.backgroundImage = `url(${result.avatar})`
+        userInfo.setAvatar(result.avatar)
+        popupChangeAvatar.close()
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`)
       })
       .finally(() => {
-        popupChangeAvatar.close()
+        popupChangeAvatar.renderLoading(false)
       })
   }
 });
 
 allForms.forEach((form) => {
-    const formValidator = new FormValidator(form, config);
-    formValidator.enableValidation();
+  const formValidator = new FormValidator(form, config);
+  formValidator.enableValidation();
 });
-
 popupWithImage.setEventListeners();
 popupWithConfirmation.setEventListeners();
 popupAddCard.setEventListeners();
 popupEditProfile.setEventListeners();
 popupChangeAvatar.setEventListeners();
-
-btnAddNewPlace.addEventListener('click', () => {
-  popupAddCard.open();
-});
-
-userAvatar.addEventListener('click', () => {
-  popupChangeAvatar.open();
-});
-
-btnEditProfile.addEventListener('click', () => {
-  nameInput.value = userName.textContent
-  aboutInput.value = aboutUser.textContent
-  popupEditProfile.open();
-});
+btnAddNewPlace.addEventListener('click', popupAddCard.open.bind(popupAddCard));
+userAvatar.addEventListener('click', popupChangeAvatar.open.bind(popupChangeAvatar));
+btnEditProfile.addEventListener('click', openPopupEditProfile);

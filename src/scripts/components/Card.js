@@ -1,5 +1,5 @@
 export default class Card {
-    constructor(data, templateSelector, openCard, openPopupWithConfirmation, putLike) {
+    constructor(data, templateSelector, openCard, openPopupWithConfirmation, putLike, userId) {
         this._data = data
         this._name = this._data.name;
         this._link = this._data.link;
@@ -7,6 +7,7 @@ export default class Card {
         this._openCard = openCard;
         this._openPopupWithConfirmation = openPopupWithConfirmation
         this._putLike = putLike
+        this._userId = userId
     };
 
     _setEventListeners() {
@@ -39,7 +40,7 @@ export default class Card {
     };
 
     _hasLike = (data) => {
-        return data.likes.some((like) => like._id === "ba7c91f6405d2b992679dc1b")
+        return data.likes.some((like) => like._id === this._userId)
     };
 
     setLikes(data) {
@@ -64,7 +65,7 @@ export default class Card {
     };
 
     _showTrash() {
-        this._data.owner._id === "ba7c91f6405d2b992679dc1b" ?
+        this._data.owner._id === this._userId ?
         this._element.querySelector('.card__delete').classList.remove('hide') : null
     }
 };

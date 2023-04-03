@@ -3,13 +3,26 @@ export default class Api {
         this._baseUrl = options.baseUrl
         this._token = options.headers
     }
-  
+
+    _getResponseData(res) {
+        if (!res.ok) {
+            return Promise.reject(res.status);
+        }
+        return res.json();
+    }
+
     getInitialCards() {
         return fetch(`${this._baseUrl}/cards`, { headers: this._token })
+            .then(res => {
+                return this._getResponseData(res)
+            })
     }
-  
+
     getUserInfo() {
         return fetch(`${this._baseUrl}/users/me`, { headers: this._token })
+            .then(res => {
+                return this._getResponseData(res)
+            })
     }
 
     addCard(formData) {
@@ -17,6 +30,9 @@ export default class Api {
             method: 'POST',
             headers: this._token,
             body: JSON.stringify(formData)
+        })
+        .then(res => {
+            return this._getResponseData(res)
         })
     }
 
@@ -26,12 +42,18 @@ export default class Api {
             headers: this._token,
             body: JSON.stringify(formData)
         })
+        .then(res => {
+            return this._getResponseData(res)
+        })
     }
 
     deleteCard(cardId) {
         return fetch(`${this._baseUrl}/cards/${cardId}`, {
             method: 'DELETE',
             headers: this._token,
+        })
+        .then(res => {
+            return this._getResponseData(res)
         })
     }
 
@@ -40,6 +62,9 @@ export default class Api {
             method: set,
             headers: this._token,
         })
+        .then(res => {
+            return this._getResponseData(res)
+        })
     }
 
     changeAvatar(formData) {
@@ -47,6 +72,9 @@ export default class Api {
             method: 'PATCH',
             headers: this._token,
             body: JSON.stringify(formData)
+        })
+        .then(res => {
+            return this._getResponseData(res)
         })
     }
 }
