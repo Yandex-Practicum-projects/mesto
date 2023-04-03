@@ -18,9 +18,9 @@
             <div class="profile__card">
                 <div class="profile__avatar"></div>
                 <div class="profile__info">
-                    <h1 class="profile__name">Жак-Ив Кусто</h1>
+                    <h1 class="profile__name"></h1>
                     <button type="button" class="profile__edit"></button>
-                    <p class="profile__about">Исследователь океана</p>
+                    <p class="profile__about"></p>
                 </div>
             </div>
             <button type="button" class="profile__add"></button>
@@ -30,7 +30,7 @@
         </section>
     </main>
     <footer class="footer">
-        <p class="footer__copyright">© 2020 Mesto Russia</p>
+        <p class="footer__copyright">© 2023 Mesto Russia</p>
     </footer>
     <div class="popup popup_edit">
         <div class="popup__container">
@@ -70,6 +70,29 @@
             </form>
         </div>
     </div>
+    <div class="popup popup_change-avatar">
+        <div class="popup__container">
+            <button type="button" class="popup__close"></button>
+            <h2 class="popup__title">Обновить аватар</h2>
+            <form name="new-place" class="popup__form" novalidate>
+                <div class="popup__wraper">
+                    <input type="url" name="avatar" required class="popup__item popup__link"
+                        placeholder="Ссылка на картинку">
+                    <span class="popup__item-error avatar-error"></span>
+                </div>
+                <button type="submit" class="popup__save">Сохранить</button>
+            </form>
+        </div>
+    </div>
+    <div class="popup popup_confirmation">
+        <div class="popup__container">
+            <button type="button" class="popup__close"></button>
+            <form>
+                <h2 class="popup__title">Вы уверены?</h2>
+                <button type="submit" class="popup__save">Да</button>
+            </form>
+        </div>
+    </div>
     <div class="popup popup_foolscreen-card">
         <div class="popup__card">
             <button class="popup__close"></button>
@@ -79,12 +102,11 @@
     </div>
     <template class="template">
         <article class="card">
-            <button class="card__delete"></button>
+            <button class="card__delete hide"></button>
             <img class="card__image">
             <div class="card__info">
-                <h2 class="card__name-place">
-                </h2>
-                <button type="button" class="card__like"></button>
+                <h2 class="card__name-place"></h2>
+                <button type="button" data-like="2" class="card__like"></button>
             </div>
         </article>
     </template>

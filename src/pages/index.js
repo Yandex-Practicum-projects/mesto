@@ -7,36 +7,172 @@ import Section from '../scripts/components/Section.js';
 import PopupWithImage from '../scripts/components/PopupWithImage.js';
 import PopupWithForm from '../scripts/components/PopupWithForm.js';
 import UserInfo from '../scripts/components/UserInfo.js';
+import Api from '../scripts/components/Api.js';
+import PopupWithConfirmation from '../scripts/components/PopupWithConfirmation.js';
 
 const btnEditProfile = document.querySelector(config.btnEditProfileSelector);
 const btnAddNewPlace = document.querySelector(config.btnAddCardSelector);
 const allForms = Array.from(document.querySelectorAll(config.formSelector));
+const userName = document.querySelector(config.userNameSelector);
+const aboutUser = document.querySelector(config.aboutSelector);
+const popupEdit = document.querySelector(config.popupEditProfileSelector);
+const nameInput = popupEdit.querySelector('.popup__name');
+const aboutInput = popupEdit.querySelector('.popup__about');
+const userAvatar = document.querySelector('.profile__avatar');
+
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-63',
+  headers: {
+      authorization: '485da694-81b9-4feb-af69-7e62f449a2e4',
+      'Content-Type': 'application/json'
+  }
+}); 
+
+const renderer = (item) => {
+  const card = new Card(item, config.templateSelector, handleCardClick, openPopupWithConfirmation, togleLike);
+  const cardElement = card.generateCard();
+  cardsList.addItem(cardElement);
+}
+
+const deleteCard = (card) => {
+  api.deleteCard(card._data._id)
+    .then(res => {
+      if (res.ok) {
+        card.deleteCard()
+      }  else {
+        return Promise.reject(res.status)
+      }
+    })
+    .catch((err) => {
+      console.log(`Ошибка: ${err}`)
+    })
+};
+
+const cardsList = new Section({ renderer }, config.containerSelector);
+const popupWithImage = new PopupWithImage(config.popupImageSelector);
+const popupWithConfirmation = new PopupWithConfirmation(config.popupConfirmationSelector, deleteCard);
+const userInfo = new UserInfo(config.userNameSelector, config.aboutSelector);
+
+api.getInitialCards()
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    } else {
+      return initialCards
+    }
+  })
+  .then((result) => {
+    cardsList.renderItems(result)
+  });
+
+api.getUserInfo()
+  .then((res) => {
+    if(res.ok) {
+      return res.json()
+    } else {
+      return Promise.reject(res.status)
+    }
+  })
+  .then((result) => {
+    userInfo.setUserInfo(result)
+    userAvatar.style.backgroundImage = `url(${result.avatar})`
+  })
+  .catch((err) => {
+    console.log(`Ошибка: ${err}`)
+  });
 
 const handleCardClick = (name, link) => {
     popupWithImage.open(name, link)
 };
 
-const renderer = (item) => {
-    const card = new Card(item, config.templateSelector, handleCardClick);
-    const cardElement = card.generateCard();
-    cardsList.addItem(cardElement);
-}
+const openPopupWithConfirmation = (card) => {
+  popupWithConfirmation.open(card)
+};
 
-const cardsList = new Section({ items: initialCards, renderer }, config.containerSelector);
-const popupWithImage = new PopupWithImage(config.popupImageSelector);
-const userInfo = new UserInfo(config.userNameSelector, config.aboutSelector);
+const togleLike = (card, set) => {
+  api.togleLike(card._data._id, set)
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }  else {
+        return Promise.reject(res.status)
+      }
+    })
+    .then((result) => {
+      card.setLikes(result)
+    })
+    .catch((err) => {
+      console.log(`Ошибка: ${err}`)
+    })
+};
+
 const popupAddCard = new PopupWithForm({
-    selector: config.popupAddCardSelector,
-    handleFormSubmit: (formData) => {
-        renderer(formData);
-    }
+  selector: config.popupAddCardSelector,
+  handleFormSubmit: (formData) => {
+    api.addCard(formData)
+      .then((res) => {
+        if(res.ok) {
+          return res.json()
+        } else {
+          return Promise.reject(res.status)
+        }
+      })
+      .then((result) => {
+        renderer(result);
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`)
+      })
+      .finally(() => {
+        popupAddCard.close()
+      })
+  }
 });
 
 const popupEditProfile = new PopupWithForm({
     selector: config.popupEditProfileSelector,
     handleFormSubmit: (formData) => {
-        userInfo.setUserInfo(formData)
+      api.editUserInfo(formData)
+        .then((res) => {
+          if(res.ok) {
+            return res.json()
+          } else {
+            return Promise.reject(res.status)
+          }
+        })
+        .then((result) => {
+          userInfo.setUserInfo(result);
+        })
+        .catch((err) => {
+          console.log(`Ошибка: ${err}`)
+        })
+        .finally(() => {
+          popupEditProfile.close()
+        })
     }
+});
+
+const popupChangeAvatar = new PopupWithForm({
+  selector: config.popupChangeAvatarSelector,
+  handleFormSubmit: (formData) => {
+    api.changeAvatar(formData)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject(res.status)
+        }
+      })
+      .then((result) => {
+        userAvatar.style.backgroundImage = `url(${result.avatar})`
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`)
+      })
+      .finally(() => {
+        popupChangeAvatar.close()
+      })
+  }
 });
 
 allForms.forEach((form) => {
@@ -44,15 +180,22 @@ allForms.forEach((form) => {
     formValidator.enableValidation();
 });
 
-cardsList.renderItems()
 popupWithImage.setEventListeners();
+popupWithConfirmation.setEventListeners();
 popupAddCard.setEventListeners();
 popupEditProfile.setEventListeners();
+popupChangeAvatar.setEventListeners();
 
 btnAddNewPlace.addEventListener('click', () => {
-    popupAddCard.open();
+  popupAddCard.open();
+});
+
+userAvatar.addEventListener('click', () => {
+  popupChangeAvatar.open();
 });
 
 btnEditProfile.addEventListener('click', () => {
-    popupEditProfile.open();
+  nameInput.value = userName.textContent
+  aboutInput.value = aboutUser.textContent
+  popupEditProfile.open();
 });

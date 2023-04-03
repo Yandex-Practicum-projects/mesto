@@ -9,6 +9,10 @@
     border: 0;
 }
 
+.card__delete.hide {
+    display: none;
+}
+
 .card__delete:hover {
     opacity: 0.5;
     cursor: pointer;

@@ -13,3 +13,7 @@
         margin: 25px 22px 70px;
     }
 }
+
+.popup_confirmation .popup__title {
+    margin-bottom: 20px;
+}
