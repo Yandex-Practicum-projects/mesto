@@ -38,6 +38,7 @@ const deleteCard = (card) => {
   api.deleteCard(card._data._id)
     .then(() => {
       card.deleteCard()
+      popupWithConfirmation.close()
     })
     .catch((err) => {
       console.log(`Ошибка: ${err}`)
@@ -55,24 +56,15 @@ const popupWithImage = new PopupWithImage(config.popupImageSelector);
 const popupWithConfirmation = new PopupWithConfirmation(config.popupConfirmationSelector, deleteCard);
 const userInfo = new UserInfo(config.userNameSelector, config.aboutSelector, userAvatar);
 
-function renderCards() {
-  api.getInitialCards()
-    .then((result) => {
-      cardsList.renderItems(result)
-    });
-}
-
-api.getUserInfo()
-  .then((result) => {
-    userInfo.setUserInfo(result)
-    userInfo.setAvatar(result.avatar)
+Promise.all([ api.getUserInfo(), api.getInitialCards() ])
+  .then((values)=>{
+    userInfo.setUserInfo(values[0])
+    userInfo.setAvatar(values[0].avatar)
+    cardsList.renderItems(values[1])
   })
   .catch((err) => {
     console.log(`Ошибка: ${err}`)
   })
-  .finally(() => {
-    renderCards()
-  });
 
 const handleCardClick = (name, link) => {
   popupWithImage.open(name, link)
@@ -147,6 +139,7 @@ allForms.forEach((form) => {
   const formValidator = new FormValidator(form, config);
   formValidator.enableValidation();
 });
+
 popupWithImage.setEventListeners();
 popupWithConfirmation.setEventListeners();
 popupAddCard.setEventListeners();
