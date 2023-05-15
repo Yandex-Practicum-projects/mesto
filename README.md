@@ -1,4 +1,4 @@
-# Проект: Место
+# Project: Mesto
 
 This is a web application that allows users to manage their photos by adding, removing, and editing themand liking users' photos.. It also provides the functionality to update their profile by changing their avatar image, name, and description. The application has been developed using HTML, CSS, and JavaScript with the help of object-oriented programming (OOP) concepts.
 
