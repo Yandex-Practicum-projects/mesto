@@ -1,6 +1,8 @@
 # Project: Mesto
 
-This is a web application that allows users to manage their photos by adding, removing, and editing themand liking users' photos.. It also provides the functionality to update their profile by changing their avatar image, name, and description. The application has been developed using HTML, CSS, and JavaScript with the help of object-oriented programming (OOP) concepts.
+This is a web application that enables users to manage their photos by adding, removing, and editing them, as well as liking other users' photos. It also provides the functionality to update user profiles by changing their avatar image, name, and description. 
+
+The application has been developed using HTML, CSS, and JavaScript with the help of object-oriented programming (OOP) concepts. Additionally, Mesto was built using Webpack to optimize and bundle the code for production, while Babel was used to ensure cross-browser compatibility and transpile modern JavaScript features into older syntax. This ensures that the application is able to function properly on a variety of browsers and devices.
 
 ---
 
