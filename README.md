@@ -28,7 +28,7 @@ The application has been developed using HTML, CSS, and JavaScript with the help
 ## Usage
 
 The web page is available for viewing in any web browser.
-[Link to the **GitHub Pages**](https://bababum95.github.io/mesto/) 
+[Link to the **GitHub Pages**](https://yandex-practicum-projects.github.io/mesto/) 
 
 ---
 
